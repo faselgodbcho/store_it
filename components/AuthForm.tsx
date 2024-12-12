@@ -17,8 +17,8 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-// import { createAccount, signInUser } from "@/lib/actions/user.actions";
-// import OtpModal from "@/components/OTPModal";
+import { createAccount, signInUser } from "@/lib/actions/user.actions";
+import OtpModal from "@/components/OTPModal";
 
 type FormType = "sign-in" | "sign-up";
 
@@ -47,23 +47,22 @@ const AuthForm = ({ type }: { type: FormType }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log("form submitted.", values);
-    // setIsLoading(true);
-    // setErrorMessage("");
-    // try {
-    //   const user =
-    //     type === "sign-up"
-    //       ? await createAccount({
-    //           fullName: values.fullName || "",
-    //           email: values.email,
-    //         })
-    //       : await signInUser({ email: values.email });
-    //   setAccountId(user.accountId);
-    // } catch {
-    //   setErrorMessage("Failed to create account. Please try again.");
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    setIsLoading(true);
+    setErrorMessage("");
+    try {
+      const user =
+        type === "sign-up"
+          ? await createAccount({
+              fullName: values.fullName || "",
+              email: values.email,
+            })
+          : await signInUser({ email: values.email });
+      setAccountId(user.accountId);
+    } catch {
+      setErrorMessage("Failed to create account. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -156,9 +155,9 @@ const AuthForm = ({ type }: { type: FormType }) => {
         </form>
       </Form>
 
-      {/* {accountId && (
+      {accountId && (
         <OtpModal email={form.getValues("email")} accountId={accountId} />
-      )} */}
+      )}
     </>
   );
 };
