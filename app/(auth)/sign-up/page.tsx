@@ -1,3 +1,5 @@
-export default function SignUp() {
-  return <div className="bg-black">sign up</div>;
-}
+import AuthForm from "@/components/AuthForm";
+
+const SignOut = () => <AuthForm type="sign-up" />;
+
+export default SignOut;
