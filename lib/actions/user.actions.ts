@@ -50,7 +50,12 @@ export const createAccount = async ({
   if (!accountId) throw new Error("Failed to send an OTP");
 
   if (!existingUser) {
-    const { databases } = await createAdminClient();
+    const { databases, avatars } = await createAdminClient();
+
+    // const initialsAvatar = avatars.getInitials(fullName, 100, 100);
+
+    // // Use the URL or embed it in your app:
+    // console.log(initialsAvatar); // URL to the generated avatar
 
     await databases.createDocument(
       appwriteConfig.databaseId,
@@ -132,11 +137,11 @@ export const signInUser = async ({ email }: { email: string }) => {
 
     // User exists, send OTP
     if (existingUser) {
-      // await sendEmailOTP({ email });
-      // return parseStringify({ accountId: existingUser.accountId });
+      await sendEmailOTP({ email });
+      return parseStringify({ accountId: existingUser.accountId });
 
-      const user = await sendEmailOTP({ email });
-      return parseStringify({ accountId: user });
+      // const user = await sendEmailOTP({ email });
+      // return parseStringify({ accountId: user });
     }
 
     return parseStringify({ accountId: null, error: "User not found" });
